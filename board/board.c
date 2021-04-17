@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h>
+
 #include "board.h"
 
 int board_init(board_t *board, size_t col, size_t row) {
@@ -104,19 +106,17 @@ int board_set(board_t board, unsigned int col, unsigned int row, char val) {
 }
 
 int board_load(board_t *board, char *str) {
-    int i = 0, h = 1, j, falla = 0;
-    for (; i < strlen(str); ++i) {
-        if (isdigit(*(str + i)))
-            h = *(str + i) + 0;
-        else if (isalpha(*(str + i))) {
-            for (j = 0; j < h; ++j) {
-                falla = board_set(*board, (i % board->row) % board->col, i % board->row, *(str + i));
-                if (falla)
-                 break;
-            }
-            h = 1;
+    int i = 0, j, mult, falla = 0, pos = 0;
+    char val;
+    while (sscanf(str, " %d%c", mult, val) == 2) {
+        for (j = 0; j < mult; ++j) {
+            falla = board_set(*board, pos % board->col, pos / board->col, val);
+            ++pos;
+            if (falla)
+                break;
         }
     }
+    falla = (pos != (board->row * board->col) - 1);
     return falla;
 }
 
@@ -132,11 +132,8 @@ void board_show(board_t board, char *res) {
 }
 
 void board_destroy(board_t *board) {
-    int i = 0, j;
-    for (; i < board->row; ++i) {
-        for (j = 0; j < board->col; ++j)
-            free(board->cell[i][j]);
+    for (int i = 0; i < board->row; ++i)
         free(board->cell[i]);
-    }
+    free(board->cell);
     free(board);
 }
