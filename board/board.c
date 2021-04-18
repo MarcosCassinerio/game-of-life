@@ -9,9 +9,8 @@ int board_init(board_t *board, size_t col, size_t row) {
     if (col < 0 || row < 0)
         return 1;
 
-    int i = 0, falla = 0;
-    
-    board = malloc(sizeof(board_t));
+    unsigned int i = 0;
+    int falla = 0;
 
     board->col = col;
     board->row = row;
@@ -35,7 +34,6 @@ int board_init(board_t *board, size_t col, size_t row) {
         for (; i > 0; --i)
             free(board->cell[i]);
         free(board->cell);
-        free(board);
         return 1;
     }
 
@@ -46,7 +44,8 @@ int board_init_def(board_t *board, size_t col, size_t row, char def) {
     if (col < 0 || row < 0)
         return 1;
 
-    int i = 0, h, falla = 0;
+    unsigned int i = 0, j;
+    int falla = 0;
     
     board = malloc(sizeof(board_t));
 
@@ -66,8 +65,8 @@ int board_init_def(board_t *board, size_t col, size_t row, char def) {
             falla = 1;
             break;
         }
-        for (h = 0; h < col; ++h)
-            board->cell[i][h] = def;
+        for (j = 0; j < col; ++j)
+            board->cell[i][j] = def;
     }
 
     if (falla) {
@@ -83,7 +82,7 @@ int board_init_def(board_t *board, size_t col, size_t row, char def) {
 
 char board_get(board_t board, unsigned int col, unsigned int row) {
     if (col >= board.col || row >= board.row)
-        return NULL;
+        return ' ';
 
     return board.cell[row][col];
 }
@@ -105,35 +104,48 @@ int board_set(board_t board, unsigned int col, unsigned int row, char val) {
     return 0;
 }
 
+int digits_of_int(unsigned int n) {
+    int count = 0;
+    while (n != 0) {
+        n /= 10;     
+        ++count;
+    }
+    return count;
+}
+
 int board_load(board_t *board, char *str) {
-    int i = 0, j, mult, falla = 0, pos = 0;
+    unsigned int j, mult, pos = 0;
+    int falla = 0;
     char val;
-    while (sscanf(str, " %d%c", mult, val) == 2) {
+    while (sscanf(str, " %d%c", &mult, &val) == 2) {
         for (j = 0; j < mult; ++j) {
             falla = board_set(*board, pos % board->col, pos / board->col, val);
+            if (falla)
+                break;
             ++pos;
+        }
+        str += (*str == '\n' ? 1 : 0) + digits_of_int(mult) + 1;
+        if (*str == '\n' || *str == '\0') {
+            falla = (pos % board->col != 0);
             if (falla)
                 break;
         }
     }
-    falla = (pos != (board->row * board->col) - 1);
     return falla;
 }
 
 void board_show(board_t board, char *res) {
-    int i = 0, j;
-    res = malloc(sizeof(char) * board.row * board.col);
+    unsigned int i = 0, j;
     for (; i < board.row; ++i) {
         for (j = 0; j < board.col; ++j)
-            *(res + (i * board.row) + j) = board.cell[i][j];
-        *(res + (i * board.row) + j) = '\n';
+            *(res + (i * (board.col + 1)) + j) = board.cell[i][j];
+        *(res + (i * (board.col + 1)) + board.col) = '\n';
     }
-    *(res + (i * board.row) + j) = '\0';
+    *(res + ((board.col + 1) * board.row) - 1) = '\0';
 }
 
 void board_destroy(board_t *board) {
-    for (int i = 0; i < board->row; ++i)
+    for (unsigned int i = 0; i < board->row; ++i)
         free(board->cell[i]);
     free(board->cell);
-    free(board);
 }
