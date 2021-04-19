@@ -134,6 +134,27 @@ int board_load(board_t *board, char *str) {
     return falla;
 }
 
+int board_load_row(board_t *board, char *str, unsigned int row) {
+    unsigned int j, mult, pos = 0;
+    int falla = 0;
+    char val;
+    while (sscanf(str, " %d%c", &mult, &val) == 2) {
+        for (j = 0; j < mult; ++j) {
+            falla = board_set(*board, pos, row, val);
+            if (falla)
+                break;
+            ++pos;
+        }
+        str += digits_of_int(mult) + 1;
+        if (*str == '\n' || *str == '\0') {
+            falla = (pos != board->col);
+            if (falla)
+                break;
+        }
+    }
+    return falla;
+}
+
 void board_show(board_t board, char *res) {
     unsigned int i = 0, j;
     for (; i < board.row; ++i) {

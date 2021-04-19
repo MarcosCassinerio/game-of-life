@@ -1,13 +1,18 @@
 #ifndef GAME_TYPES
 #define GAME_TYPES
-#include "Board.h"
+
+#include "../board/board.h"
+#include "../barrier/barrier.h"
 
 /******************************************************************************/
 /* Representamos las células vivas como 'O' y las muertas como 'X' */
 
-enum State {ALIVE, DEAD};
+enum State {ALIVE = 'O', DEAD = 'X'};
 /******************************************************************************/
-struct _game;
+struct _game {
+    unsigned int cycles;
+    board_t board;
+};
 
 typedef struct _game game_t;
 /******************************************************************************/

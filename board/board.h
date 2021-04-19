@@ -36,6 +36,8 @@ int board_set(board_t board, unsigned int col, unsigned int row, char val);
  * interpretarla como un tablero */
 int board_load(board_t *board, char *str);
 
+int board_load_row(board_t *board, char *str, unsigned int row);
+
 /* Función para mostrar el tablero */
 /* La función 'board_show' asume que hay espacio suficiente en 'res' para alojar el tablero.*/
 void board_show(board_t board, char *res);
