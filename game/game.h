@@ -11,7 +11,7 @@ enum State {ALIVE = 'O', DEAD = 'X'};
 /******************************************************************************/
 struct _game {
     unsigned int cycles;
-    board_t board;
+    board_t *board;
 };
 
 typedef struct _game game_t;
