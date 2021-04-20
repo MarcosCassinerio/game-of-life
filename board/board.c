@@ -6,9 +6,6 @@
 #include "board.h"
 
 int board_init(board_t *board, size_t col, size_t row) {
-    if (col < 0 || row < 0)
-        return 1;
-
     unsigned int i = 0;
     int falla = 0;
 
@@ -41,9 +38,6 @@ int board_init(board_t *board, size_t col, size_t row) {
 }
 
 int board_init_def(board_t *board, size_t col, size_t row, char def) {
-    if (col < 0 || row < 0)
-        return 1;
-
     unsigned int i = 0, j;
     int falla = 0;
     
@@ -92,7 +86,7 @@ char board_get_round(board_t board, int col, int row) {
 
     col = col % board.col;
 
-    return board.cell[row >= 0 ? row : (board.row + row)][col >= 0 ? col : (board.col + col)];
+    return board.cell[(row >= 0) ? (unsigned int)row : (board.row + row)][(col >= 0) ? (unsigned int)col : (board.col + col)];
 }
 
 int board_set(board_t board, unsigned int col, unsigned int row, char val) {

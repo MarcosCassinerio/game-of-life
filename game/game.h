@@ -7,7 +7,7 @@
 /******************************************************************************/
 /* Representamos las células vivas como 'O' y las muertas como 'X' */
 
-enum State {ALIVE = 'O', DEAD = 'X'};
+typedef enum State {ALIVE = 'O', DEAD = 'X'} State;
 /******************************************************************************/
 struct _game {
     unsigned int cycles;

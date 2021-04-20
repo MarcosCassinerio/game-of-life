@@ -24,11 +24,10 @@ int barrier_wait(barrier_t *barr) {
     falla = pthread_mutex_lock(&(barr->mutex));
 
     if (!falla) {
-        if (barr->waiting < barr->count) {
+        if (barr->waiting < (barr->count - 1)) {
             ++barr->waiting;
             falla = pthread_cond_wait(&(barr->cond), &(barr->mutex));
-        }
-        else {
+        } else {
             falla = pthread_cond_broadcast(&(barr->cond));
             falla = falla || pthread_mutex_unlock(&(barr->mutex));
             barr->waiting = 0;
@@ -38,7 +37,7 @@ int barrier_wait(barrier_t *barr) {
     return falla;
 }
 
-int barried_destroy(barrier_t *barr) {
+int barrier_destroy(barrier_t *barr) {
     int falla;
     falla = pthread_cond_destroy(&(barr->cond));
     falla = falla || pthread_mutex_destroy(&(barr->mutex));
