@@ -1,7 +1,7 @@
 all: programa
 
 programa: board.o barrier.o game.o
-	gcc -Wall -Wextra -Werror -pthread -g -std=c99 -o main main.c board.o barrier.o game.o
+	gcc -Wall -Wextra -Werror -pthread -g -std=c99 -o simulador simulador.c board.o barrier.o game.o
 
 board.o: ./board/board.c
 	gcc -Wall -Wextra -Werror -pthread -g -std=c99 -c ./board/board.c

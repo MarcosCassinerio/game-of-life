@@ -37,43 +37,6 @@ int board_init(board_t *board, size_t col, size_t row) {
     return 0;
 }
 
-int board_init_def(board_t *board, size_t col, size_t row, char def) {
-    unsigned int i = 0, j;
-    int falla = 0;
-    
-    board = malloc(sizeof(board_t));
-
-    board->col = col;
-    board->row = row;
-
-    board->cell = malloc(sizeof(char*) * row);
-
-    if (!(board->cell)) {
-        free(board);
-        return 1;
-    }
-    
-    for (; i < row; ++i) {
-        board->cell[i] = malloc(sizeof(char) * col);
-        if (!(board->cell)) {
-            falla = 1;
-            break;
-        }
-        for (j = 0; j < col; ++j)
-            board->cell[i][j] = def;
-    }
-
-    if (falla) {
-        for (; i > 0; --i)
-            free(board->cell[i]);
-        free(board->cell);
-        free(board);
-        return 1;
-    }
-
-    return 0;
-}
-
 char board_get(board_t board, unsigned int col, unsigned int row) {
     if (col >= board.col || row >= board.row)
         return ' ';
@@ -141,7 +104,10 @@ void board_show(board_t board, char *res) {
 }
 
 void board_destroy(board_t *board) {
-    for (unsigned int i = 0; i < board->row; ++i)
-        free(board->cell[i]);
-    free(board->cell);
+    if (board) {
+        for (unsigned int i = 0; i < board->row; ++i)
+            free(board->cell[i]);
+        free(board->cell);
+        free(board);
+    }
 }

@@ -20,9 +20,11 @@ int main(int argc, char **argv) {
 
     if (game) {
         game->board = congwayGoL(game->board, game->cycles, get_nprocs());
-        
+
         if (game->board)
             writeBoard(*(game->board), str);
+
+        destroyGame(game);
     }
     else
         perror("rompo");

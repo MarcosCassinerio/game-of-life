@@ -25,6 +25,9 @@ void writeBoard(board_t board, const char *filename);
 
 /* Simulamos el Juego de la Vida de Conway con tablero 'board' la cantidad de
 ciclos indicados en 'cycles' en 'nuprocs' unidades de procesamiento*/
-board_t *congwayGoL(board_t *board, unsigned int cycles, const int nuproc);
+board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc);
+
+/* Destruimos el Game */
+void destroyGame(game_t *game);
 
 #endif

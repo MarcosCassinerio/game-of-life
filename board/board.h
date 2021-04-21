@@ -20,9 +20,6 @@ typedef struct _board board_t;
 /* Creación del tablero */
 int board_init(board_t *board, size_t col, size_t row);
 
-/* Creación del tablero con un elemento por default*/
-int board_init_def(board_t *board, size_t col, size_t row, char def);
-
 /* Leer el tablero en una posición (col, row) */
 char board_get(board_t board, unsigned int col, unsigned int row);
 
@@ -32,8 +29,7 @@ char board_get_round(board_t board, int col, int row);
 /* Asignarle un valor 'val' a la posición (col, row) del tablero*/
 int board_set(board_t board, unsigned int col, unsigned int row, char val);
 
-/* Leer de una linea de una lista de caracteres que codifican un tablero en formato RLE e
- * interpretarla como un tablero */
+/* Lee de un string codificado con RLE y dado una row guarda los valores leidos en esa row del tablero*/
 int board_load_row(board_t *board, char *str, unsigned int row);
 
 /* Función para mostrar el tablero */

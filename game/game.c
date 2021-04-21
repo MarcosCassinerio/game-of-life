@@ -165,7 +165,7 @@ void *threadFoo(void *args) {
     return NULL;
 }
 
-board_t *congwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
+board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
     unsigned int nuprocAux = (unsigned int) nuproc, cantThread = (nuprocAux < board->row || nuprocAux < board->col) ? nuprocAux : board->row > board->col ? board->row : board->col, i = 0;
 
     arg_struct arguments[cantThread];
@@ -217,7 +217,7 @@ board_t *congwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
         for (i = 0; i < cantThread; ++i)
             assert(!pthread_join(threads[i], NULL));
 
-        free(*(boardArray + ((cycles + 1) % 2)));
+        board_destroy(*(boardArray + ((cycles + 1) % 2)));
 
         board = *(boardArray + (cycles % 2));
 
@@ -227,4 +227,11 @@ board_t *congwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
     }
 
     return NULL;
+}
+
+void destroyGame(game_t *game) {
+    if (game) {
+        board_destroy(game->board);
+        free(game);
+    }
 }
