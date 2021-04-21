@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2021.1.7)  21 APR 2021 15:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2021.1.7)  21 APR 2021 19:51
 entering extended mode
 **./Informe_SO1_TP1_Cerruti_Cassinerio.tex
 (Informe_SO1_TP1_Cerruti_Cassinerio.tex
@@ -399,9 +399,17 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 162.
  (Informe_SO1_TP1_Cerruti_Cassinerio.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 162.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 162.
-Package rerunfilecheck Info: File `Informe_SO1_TP1_Cerruti_Cassinerio.out' has 
-not changed.
-(rerunfilecheck)             Checksum: 3FB7644D6D2064D6BCACA03D2AADD523;568.
+
+
+Package rerunfilecheck Warning: File `Informe_SO1_TP1_Cerruti_Cassinerio.out' h
+as changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Informe_SO1_TP1_Cerruti_Cassinerio.
+out':
+(rerunfilecheck)             Before: B4C8F990D8FF704ECF80F6E914919BF4;578
+(rerunfilecheck)             After:  3FB7644D6D2064D6BCACA03D2AADD523;568.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 162.
  ) 
 Here is how much of TeX's memory you used:
@@ -411,7 +419,7 @@ Here is how much of TeX's memory you used:
  23750 multiletter control sequences out of 15000+200000
  537298 words of font info for 41 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,6n,53p,659b,1203s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 37i,6n,53p,642b,1203s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Certi\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 0600.pk> <C:\Users\Certi\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
 0\tcrm0800.pk><C:/Users/Certi/AppData/Local/Programs/MiKTeX/fonts/type1/public/
@@ -422,7 +430,7 @@ iKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Certi/AppData/Local/Pr
 ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Certi/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Certi/
 AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on Informe_SO1_TP1_Cerruti_Cassinerio.pdf (6 pages, 109155 bytes
+Output written on Informe_SO1_TP1_Cerruti_Cassinerio.pdf (6 pages, 109146 bytes
 ).
 PDF statistics:
  145 PDF objects out of 1000 (max. 8388607)
