@@ -21,56 +21,49 @@ typedef struct arg_struct_t {
 
 game_t *loadGame(const char *filename) {
     unsigned int cycles, col, row;
-    int falla, i = 0;
+    int i = 0;
     char *res;
     game_t *game;
     FILE *file = fopen(filename, "r");
 
-    if (!file)
+    if (!file) {
+        printf("Error al leer el archivo\n");
         return NULL;
+    }
 
     if (fscanf(file, "%d %d %d", &cycles, &row, &col) == 3) {
         game = malloc(sizeof(game_t));
+        res = malloc(sizeof(char) * ((2 * col) + 2));
         
-        falla = game == NULL;
+        if (!game || !res) {
+            printf("Error al crear el juego\n");
+            return NULL;
+        }
 
-        if (!falla) {
-            game->cycles = cycles;
+        game->cycles = cycles;
 
-            game->board = malloc(sizeof(board_t));
-        
-            falla = game->board == NULL;
+        game->board = malloc(sizeof(board_t));
+    
+        if (!(game->board) || board_init(game->board, col, row)) {
+            printf("Error al crear el tablero de entrada");
+            return NULL;
+        }
 
-            if (!falla) {
-                falla = board_init(game->board, col, row);
-                
-                if (!falla) {
-                    res = malloc(sizeof(char) * ((2 * col) + 2));
-                    fgets(res, (2 * col) + 2, file);
+        fgets(res, (2 * col) + 2, file);
 
-                    for (; i < (int) game->board->row; ++i) {
-                        fgets(res, (2 * col) + 2, file);
+        for (; i < (int) game->board->row; ++i) {
+            fgets(res, (2 * col) + 2, file);
 
-                        falla = board_load_row(game->board, res, i);
-
-                        if (falla)
-                            break;
-                    }
-                    free(res);
-                }
+            if (board_load_row(game->board, res, i)) {
+                printf("Error al llenar el tablero de entrada\n");
+                return NULL;
             }
         }
+        free(res);
 
         fclose(file);
-    } else
-        return NULL;
-
-    if (falla) {
-        if (game) {
-            if (game->board)
-                free(game->board);
-            free(game);
-        }
+    } else {
+        printf("Error al leer el archivo");
         return NULL;
     }
 
@@ -78,16 +71,19 @@ game_t *loadGame(const char *filename) {
 }
 
 void writeBoard(board_t board, const char *filename) {
-    char *res = malloc(sizeof(char) * (board.col + 1) * board.row);
+    char *res = malloc(sizeof(char) * ((2 * board.col + 1) * board.row + 1));
     FILE *file = fopen(filename, "w+");
 
-    board_show(board, res);
+    if (file) {
+        board_show(board, res);
 
-    fprintf(file, "%s", res);
+        fprintf(file, "%s", res);
 
-    fclose(file);
+        fclose(file);
 
-    free(res);
+        free(res);
+    } else
+        printf("Error al escribir la salida\n");
 }
 
 submatrix *distribute(unsigned int row, unsigned int col, const int nuproc) {
@@ -176,30 +172,27 @@ board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
 
     barrier_t *barrier = malloc(sizeof(barrier_t));
 
-    if (!barrier)
+    if (barrier_init(barrier, cantThread)) {
+        printf("Error al crear la barrera\n");
         return NULL;
-    
-    barrier_init(barrier, cantThread);
+    }
 
     submatrix *submatrixArray = distribute(board->row, board->col, cantThread);
+
+    if (!submatrixArray) {
+        printf("Error al dividir la matriz\n");
+        return NULL;
+    }
 
     board_t *boardAux, **boardArray;
     
     if (board) {
         boardArray = malloc(sizeof(board_t*) * 2);
 
-        if (!boardArray) {
-            barrier_destroy(barrier);
-            free(submatrixArray);
-            return NULL;
-        }
-
         boardAux = malloc(sizeof(board_t));
 
-        if (!boardAux || board_init(boardAux, board->col, board->row)) {
-            barrier_destroy(barrier);
-            free(submatrixArray);
-            free(boardArray);
+        if (!board || !boardAux || board_init(boardAux, board->col, board->row)) {
+            printf("Error al crear el tablero de salida\n");
             return NULL;
         }
 

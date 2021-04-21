@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
 
 #include "board.h"
 
@@ -93,14 +94,45 @@ int board_load_row(board_t *board, char *str, unsigned int row) {
     return falla;
 }
 
-void board_show(board_t board, char *res) {
-    unsigned int i = 0, j;
-    for (; i < board.row; ++i) {
-        for (j = 0; j < board.col; ++j)
-            *(res + (i * (board.col + 1)) + j) = board.cell[i][j];
-        *(res + (i * (board.col + 1)) + board.col) = '\n';
+void intToString(int val, char *res) {
+    int digits = digits_of_int(val), i = 0, pot;
+
+    for (; i < digits; ++i) {
+        pot = (int) (pow(10, digits - i - 1));
+        *(res + i) = 48 + (val / pot);
+        val -= (val / pot) * pot;
     }
-    *(res + ((board.col + 1) * board.row) - 1) = '\0';
+
+    *(res + i) = '\0';
+}
+
+void board_show(board_t board, char *res) {
+    unsigned int i = 0, j, mult;
+    char actual, *aux = res, *aux2 = malloc(sizeof(char) * (digits_of_int(board.col) + 1));
+    for (; i < board.row; ++i) {
+        mult = 0;
+        actual = board.cell[i][0];
+        for (j = 0; j < board.col; ++j) {
+            if (actual != board.cell[i][j]) {
+                intToString(mult, aux2);
+                strcpy(aux, aux2);
+                aux += digits_of_int(mult);
+                *(aux) = actual;
+                ++aux;
+                actual = board.cell[i][j];
+                mult = 1;
+            } else
+                ++mult;
+        }
+        
+        intToString(mult, aux2);
+        strcpy(aux, aux2);
+        aux += digits_of_int(mult);
+        *(aux) = actual;
+        *(aux + 1) = '\n';
+        aux += 2;
+    }
+    *(aux) = '\0';
 }
 
 void board_destroy(board_t *board) {
