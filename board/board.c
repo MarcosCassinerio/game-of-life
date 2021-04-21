@@ -82,11 +82,11 @@ char board_get(board_t board, unsigned int col, unsigned int row) {
 }
 
 char board_get_round(board_t board, int col, int row) {
-    row = row % board.row;
+    int i = row >= 0 ? row % (int) board.row : (row >= -((int) board.row)) ? (int) board.row + row : (-(row + (int) board.row)) % (int) board.row;
 
-    col = col % board.col;
+    int j = col >= 0 ? col % (int) board.col : (col >= -((int) board.col)) ? (int) board.col + col : (-(col + (int) board.col)) % (int) board.col;
 
-    return board.cell[(row >= 0) ? (unsigned int)row : (board.row + row)][(col >= 0) ? (unsigned int)col : (board.col + col)];
+    return board.cell[i][j];
 }
 
 int board_set(board_t board, unsigned int col, unsigned int row, char val) {
@@ -107,27 +107,6 @@ int digits_of_int(unsigned int n) {
     return count;
 }
 
-int board_load(board_t *board, char *str) {
-    unsigned int j, mult, pos = 0;
-    int falla = 0;
-    char val;
-    while (sscanf(str, " %d%c", &mult, &val) == 2) {
-        for (j = 0; j < mult; ++j) {
-            falla = board_set(*board, pos % board->col, pos / board->col, val);
-            if (falla)
-                break;
-            ++pos;
-        }
-        str += (*str == '\n' ? 1 : 0) + digits_of_int(mult) + 1;
-        if (*str == '\n' || *str == '\0') {
-            falla = (pos % board->col != 0);
-            if (falla)
-                break;
-        }
-    }
-    return falla;
-}
-
 int board_load_row(board_t *board, char *str, unsigned int row) {
     unsigned int j, mult, pos = 0;
     int falla = 0;
@@ -139,6 +118,8 @@ int board_load_row(board_t *board, char *str, unsigned int row) {
                 break;
             ++pos;
         }
+        if (falla)
+            break;
         str += digits_of_int(mult) + 1;
         if (*str == '\n' || *str == '\0') {
             falla = (pos != board->col);

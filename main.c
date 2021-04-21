@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/sysinfo.h>
 
 #include "./game/game.h"
 
@@ -17,11 +18,14 @@ int main(int argc, char **argv) {
 
     strcat(str, ".final");
 
-    printf("%s\n", str);
-
-    writeBoard(*(game->board), str);
-
-    printf("%s\n", str);
+    if (game) {
+        game->board = congwayGoL(game->board, game->cycles, get_nprocs());
+        
+        if (game->board)
+            writeBoard(*(game->board), str);
+    }
+    else
+        perror("rompo");
 
     return 0;
 }

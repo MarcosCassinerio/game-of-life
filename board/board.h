@@ -32,10 +32,8 @@ char board_get_round(board_t board, int col, int row);
 /* Asignarle un valor 'val' a la posición (col, row) del tablero*/
 int board_set(board_t board, unsigned int col, unsigned int row, char val);
 
-/* Leer de una lista de caracteres que codifican un tablero en formato RLE e
+/* Leer de una linea de una lista de caracteres que codifican un tablero en formato RLE e
  * interpretarla como un tablero */
-int board_load(board_t *board, char *str);
-
 int board_load_row(board_t *board, char *str, unsigned int row);
 
 /* Función para mostrar el tablero */

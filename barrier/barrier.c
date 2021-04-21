@@ -6,7 +6,6 @@
 int barrier_init(barrier_t *barr, unsigned int count) {
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-    barr = malloc(sizeof(barrier_t));
 
     if (!barr)
         return 1;
@@ -29,9 +28,9 @@ int barrier_wait(barrier_t *barr) {
             falla = pthread_cond_wait(&(barr->cond), &(barr->mutex));
         } else {
             falla = pthread_cond_broadcast(&(barr->cond));
-            falla = falla || pthread_mutex_unlock(&(barr->mutex));
             barr->waiting = 0;
         }
+        falla = falla + pthread_mutex_unlock(&(barr->mutex));
     }
 
     return falla;
